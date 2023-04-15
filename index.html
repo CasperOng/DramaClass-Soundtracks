@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Drama Class Soundtracks</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+	<h1>Drama Class Soundtracks</h1>
+	<p>Select a soundtrack to play:</p>
+	<ul>
+		<li><button onclick="playTrack('track1')">Track 1 (Happy)</button></li>
+		<li><button onclick="playTrack('track2')">Track 2 (Sad)</button></li>
+		<li><button onclick="playTrack('track3')">Track 3 (Cannot figure out what to put here, just random sound)</button></li>
+	</ul>
+	<label for="fadeInTime">Fade In Time (seconds): </label>
+	<input type="number" id="fadeInTime" name="fadeInTime" min="0" max="10" value="1"><br>
+
+	<label for="fadeOutTime">Fade Out Time (seconds): </label>
+	<input type="number" id="fadeOutTime" name="fadeOutTime" min="0" max="10" value="1"><br>
+
+	<audio id="track1" src="./Sounds/happy.mp3"></audio>
+	<audio id="track2" src="./Sounds/sad.mp3"></audio>
+	<audio id="track3" src="./Sounds/balabala.mp3"></audio>
+</body>
+</html>
