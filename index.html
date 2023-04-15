@@ -1,27 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Drama Class Soundtracks</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
-	<script type="text/javascript" src="script.js"></script>
+    <meta charset="UTF-8">
+    <title>Drama Class Soundtracks</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="script.js"></script>
+    <style>
+        body {
+            padding: 40px;
+        }
+
+        /* Animation */
+
+        @keyframes fadeInUp {
+            from {
+                transform: translate3d(0,40px,0)
+            }
+
+            to {
+                transform: translate3d(0,0,0);
+                opacity: 1
+            }
+        }
+
+        @-webkit-keyframes fadeInUp {
+            from {
+                transform: translate3d(0,40px,0)
+            }
+
+            to {
+                transform: translate3d(0,0,0);
+                opacity: 1
+            }
+        }
+
+        .animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-fill-mode: both
+        }
+
+        .animatedFadeInUp {
+            opacity: 0
+        }
+
+        .fadeInUp {
+            opacity: 0;
+            animation-name: fadeInUp;
+            -webkit-animation-name: fadeInUp;
+        }
+    </style>
 </head>
 <body>
-	<h1>Drama Class Soundtracks</h1>
-	<p>Select a soundtrack to play:</p>
-	<ul>
-		<li><button onclick="playTrack('track1')">Track 1 (Happy)</button></li>
-		<li><button onclick="playTrack('track2')">Track 2 (Sad)</button></li>
-		<li><button onclick="playTrack('track3')">Track 3 (Cannot figure out what to put here, just random sound)</button></li>
-	</ul>
-	<label for="fadeInTime">Fade In Time (seconds): </label>
-	<input type="number" id="fadeInTime" name="fadeInTime" min="0" max="10" value="1"><br>
+    <div class="container animated fadeInUp">
+        <h1>Drama Class Soundtracks</h1>
+        <p class="animated fadeInUp">Select a soundtrack to play:</p>
+        <ul class="animated fadeInUp">
+            <li><button onclick="playTrack('happy')">Track 1 (Happy music (16 mins))</button></li>
+            <li><button onclick="playTrack('elegant')">Track 2 (Elegant music (20mins))</button></li>
+            <li><button onclick="playTrack('nervous')">Track 3 (Nervous music (6mins))</button></li>
+        </ul>
+        <div class="options animated fadeInUp">
+            <label for="fadeInTime">Fade In Time (seconds): </label>
+            <input type="number" id="fadeInTime" name="fadeInTime" min="0" max="10" value="1"><br>
 
-	<label for="fadeOutTime">Fade Out Time (seconds): </label>
-	<input type="number" id="fadeOutTime" name="fadeOutTime" min="0" max="10" value="1"><br>
+            <label for="fadeOutTime">Fade Out Time (seconds): </label>
+            <input type="number" id="fadeOutTime" name="fadeOutTime" min="0" max="10" value="1"><br>
 
-	<audio id="track1" src="./Sounds/happy.mp3"></audio>
-	<audio id="track2" src="./Sounds/sad.mp3"></audio>
-	<audio id="track3" src="./Sounds/balabala.mp3"></audio>
+            <button onclick="stopAllTracks()">Stop All with Fade</button>
+			
+			<button onclick="instantStop()">Stop All without Fade (Instantly)</button>
+        </div>
+        <audio id="happy" src="./Sounds/Happy music (16 mins).mp3"></audio>
+        <audio id="elegant" src="./Sounds/Elegant music (20 mins).mp3"></audio>
+        <audio id="nervous" src="./Sounds/Nervous music (6 mins).mp3"></audio>
+    </div>
 </body>
 </html>
