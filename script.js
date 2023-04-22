@@ -7,33 +7,56 @@ function setVolume(audio, volume) {
 	audio.volume = volume;
 }
 
+function stopAllTracks() {
+    // get all audio elements
+    const tracks = document.getElementsByTagName('audio');
+
+    // stop each track and clear any fade-out interval
+    for (let i = 0; i < tracks.length; i++) {
+        const track = tracks[i];
+        if (!track.paused) {
+            track.pause();
+            track.currentTime = 0;
+        }
+        const fadeOutInterval = track.fadeOutInterval;
+        if (fadeOutInterval) {
+            clearInterval(fadeOutInterval);
+            delete track.fadeOutInterval;
+        }
+    }
+}
+
 function playTrack(trackId) {
 	// get audio element by trackId
 	const audio = document.getElementById(trackId);
 
-	// stop all other playing tracks
-	stopAllTracks(trackId);
-
-	// set volume to 0 and play audio
+	// stop all tracks and reset volume
+	stopAllTracks();
 	setVolume(audio, 0);
+
+	// play selected track
 	audio.play();
 
-	// gradually increase volume to 1 with fadeInTime seconds
-	const fadeInTime = parseFloat(document.getElementById('fadeInTime').value);
-	const fadeOutTime = parseFloat(document.getElementById('fadeOutTime').value);
-	const fadeInterval = setInterval(() => {
-		if (audio.volume < 1) {
-			setVolume(audio, audio.volume + 0.1);
-		} else {
-			clearInterval(fadeInterval);
-		}
-	}, fadeInTime * 1000 / 10);
+	// if fade is needed, gradually increase volume to 1 with fadeInTime seconds
+	const isFadeNeeded = document.getElementById('isFadeNeeded').checked;
+	if (isFadeNeeded) {
+		const fadeInTime = parseFloat(document.getElementById('fadeInTime').value);
+		const fadeInterval = setInterval(() => {
+			if (audio.volume < 1) {
+				setVolume(audio, audio.volume + 0.1);
+			} else {
+				clearInterval(fadeInterval);
+			}
+		}, fadeInTime * 1000 / 10);
 
-	// add event listener to fade out audio when it finishes
-	audio.addEventListener('ended', () => {
-		fadeOut(audio, fadeOutTime);
-	});
+		// add event listener to fade out audio when it finishes
+		audio.addEventListener('ended', () => {
+			const fadeOutTime = parseFloat(document.getElementById('fadeOutTime').value);
+			fadeOut(audio, fadeOutTime);
+		});
+	}
 }
+
 
 function fadeOut(audio, fadeOutTime) {
 	// gradually decrease volume to 0 with fadeOutTime seconds
@@ -47,16 +70,6 @@ function fadeOut(audio, fadeOutTime) {
 	}, fadeOutTime * 1000 / 10);
 }
 
-function stopAllTracks(excludeTrackId) {
-	// loop through all audio elements and stop them if they are not excluded
-	const audioElements = document.getElementsByTagName('audio');
-	for (let i = 0; i < audioElements.length; i++) {
-		if (audioElements[i].id !== excludeTrackId && !audioElements[i].paused) {
-			const fadeOutTime = parseFloat(document.getElementById('fadeOutTime').value);
-			fadeOut(audioElements[i], fadeOutTime);
-		}
-	}
-}
 
 function instantStop() {
 	const audioElements = document.getElementsByTagName('audio');
