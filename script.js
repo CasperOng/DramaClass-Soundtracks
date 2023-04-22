@@ -1,87 +1,97 @@
+// Helper function to set volume of an audio element
 function setVolume(audio, volume) {
 	if (volume > 1) {
-		volume = 1;
+	  volume = 1;
 	} else if (volume < 0) {
-		volume = 0;
+	  volume = 0;
 	}
 	audio.volume = volume;
-}
-
-function stopAllTracks() {
-    // get all audio elements
-    const tracks = document.getElementsByTagName('audio');
-
-    // stop each track and clear any fade-out interval
-    for (let i = 0; i < tracks.length; i++) {
-        const track = tracks[i];
-        if (!track.paused) {
-            track.pause();
-            track.currentTime = 0;
-        }
-        const fadeOutInterval = track.fadeOutInterval;
-        if (fadeOutInterval) {
-            clearInterval(fadeOutInterval);
-            delete track.fadeOutInterval;
-        }
-    }
-}
-
-function playTrack(trackName) {
-	var track = document.getElementById(trackName);
-	var isFadeNeeded = document.getElementById("isFadeNeeded").checked;
-	var fadeInTime = parseFloat(document.getElementById("fadeInTime").value);
-	var fadeOutTime = parseFloat(document.getElementById("fadeOutTime").value);
+  }
   
-	// Stop all other tracks with fade
+  // Function to stop all tracks and clear fade-out intervals
+  function stopAllTracks() {
+	const tracks = document.getElementsByTagName('audio');
+	for (let i = 0; i < tracks.length; i++) {
+	  const track = tracks[i];
+	  if (!track.paused) {
+		track.pause();
+		track.currentTime = 0;
+	  }
+	  const fadeOutInterval = track.fadeOutInterval;
+	  if (fadeOutInterval) {
+		clearInterval(fadeOutInterval);
+		delete track.fadeOutInterval;
+	  }
+	}
+  }
+  
+  // Function to play a track with optional fade in/out effects
+  function playTrack(trackId, fadeInTime, fadeOutTime) {
+	const audio = document.getElementById(trackId);
+	
+	// Stop all other tracks and set current track to start
 	stopAllTracks();
-  
-	// Set volume to 0 to prepare for fade in
-	track.volume = 0;
-  
-	// Play the track
-	track.play();
-  
-	// If fade is needed, fade in
-	if (isFadeNeeded) {
-	  track.addEventListener('timeupdate', function() {
-		var currentTime = track.currentTime;
-		var duration = track.duration;
-  
-		// Calculate the current volume based on time
-		var volume = currentTime / duration;
-  
-		// Fade in
-		if (currentTime < fadeInTime) {
-		  track.volume = volume;
-		}
-  
-		// Fade out
-		if (duration - currentTime < fadeOutTime) {
-		  track.volume = (duration - currentTime) / fadeOutTime;
-		}
-	  });
+	audio.currentTime = 0;
+	
+	// Play track with optional fade in effect
+	audio.volume = 0;
+	audio.play();
+	if (fadeInTime) {
+	  audio.animate([{ volume: 0 }, { volume: 1 }], { duration: fadeInTime });
+	} else {
+	  audio.volume = 1;
 	}
-}
-
-function fadeOut(audio, fadeOutTime) {
-	// gradually decrease volume to 0 with fadeOutTime seconds
-	const fadeInterval = setInterval(() => {
-		if (audio.volume > 0) {
+	
+	// Add event listener to fade out track if needed
+	audio.addEventListener("ended", function() {
+	  if (fadeOutTime) {
+		const fadeOutInterval = setInterval(() => {
+		  if (audio.volume > 0) {
 			setVolume(audio, audio.volume - 0.1);
-		} else {
-			clearInterval(fadeInterval);
+		  } else {
+			clearInterval(fadeOutInterval);
 			audio.pause();
-		}
-	}, fadeOutTime * 1000 / 10);
-}
-
-
-function instantStop() {
-	const audioElements = document.getElementsByTagName('audio');
-	for (let i = 0; i < audioElements.length; i++) {
-		if (!audioElements[i].paused) {
-			audioElements[i].pause();
-			audioElements[i].currentTime = 0;
-		}
-	}
-}
+			audio.currentTime = 0;
+		  }
+		}, fadeOutTime * 1000 / 10);
+		audio.fadeOutInterval = fadeOutInterval;
+	  } else {
+		audio.pause();
+		audio.currentTime = 0;
+	  }
+	});
+  }
+  
+  // Function to instantly stop all tracks
+  function instantStop() {
+	stopAllTracks();
+  }
+  
+  // Add event listeners to play track buttons
+  const happyButton = document.getElementById("happy-button");
+  happyButton.addEventListener("click", function() {
+	const fadeInTime = document.getElementById("fadeInTime").value * 1000;
+	const fadeOutTime = document.getElementById("fadeOutTime").value * 1000;
+	playTrack("happy", fadeInTime, fadeOutTime);
+  });
+  
+  const elegantButton = document.getElementById("elegant-button");
+  elegantButton.addEventListener("click", function() {
+	const fadeInTime = document.getElementById("fadeInTime").value * 1000;
+	const fadeOutTime = document.getElementById("fadeOutTime").value * 1000;
+	playTrack("elegant", fadeInTime, fadeOutTime);
+  });
+  
+  const nervousButton = document.getElementById("nervous-button");
+  nervousButton.addEventListener("click", function() {
+	const fadeInTime = document.getElementById("fadeInTime").value * 1000;
+	const fadeOutTime = document.getElementById("fadeOutTime").value * 1000;
+	playTrack("nervous", fadeInTime, fadeOutTime);
+  });
+  
+  // Add event listener to stop button
+  const stopButton = document.getElementById("stop-button");
+  stopButton.addEventListener("click", function() {
+	instantStop();
+  });
+  

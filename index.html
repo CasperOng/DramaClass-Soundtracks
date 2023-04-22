@@ -62,8 +62,6 @@
             <li><button onclick="playTrack('nervous')">Track 3 (Nervous music (6mins))</button></li>
         </ul>
         <div class="options">
-            <label for="isFadeNeeded">Fade In/Out: (Broken Button, IGNORE PLEASE)</label>
-            <input type="checkbox" id="isFadeNeeded" name="isFadeNeeded" checked><br>
         
             <label for="fadeInTime">Fade In Time (seconds): </label>
             <input type="number" id="fadeInTime" name="fadeInTime" min="0" max="10" value="1"><br>
@@ -71,12 +69,11 @@
             <label for="fadeOutTime">Fade Out Time (seconds): </label>
             <input type="number" id="fadeOutTime" name="fadeOutTime" min="0" max="10" value="1"><br>
         
-            <button onclick="instantStop()">Stop All</button>
-            <button onclick="stopAllTracks()">Stop All with Fade (Still can stop but no fade)</button>
+            <button onclick="instantStop()">Stop All</button>        
         </div>        
-        <audio id="happy" src="./Sounds/Happy music (16 mins).mp3" playsinline></audio>
-        <audio id="elegant" src="./Sounds/Elegant music (20 mins).mp3" playsinline></audio>
-        <audio id="nervous" src="./Sounds/Nervous music (6 mins).mp3" playsinline></audio>
+        <audio id="happy" src="./Sounds/Happy music (16 mins).mp3" onended="stopTrack()"></audio>
+        <audio id="elegant" src="./Sounds/Elegant music (20 mins).mp3" onended="stopTrack()"></audio>
+        <audio id="nervous" src="./Sounds/Nervous music (6 mins).mp3" onended="stopTrack()"></audio>
     </div>
 </body>
 </html>
