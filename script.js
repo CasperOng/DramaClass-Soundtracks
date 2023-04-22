@@ -27,35 +27,18 @@ function stopAllTracks() {
 }
 
 function playTrack(trackId) {
-	// get audio element by trackId
-	const audio = document.getElementById(trackId);
+    // get audio element by trackId
+    const audio = document.getElementById(trackId);
 
-	// stop all tracks and reset volume
-	stopAllTracks();
-	setVolume(audio, 0);
+    // stop all other playing tracks
+    stopAllTracks(trackId);
 
-	// play selected track
-	audio.play();
-
-	// if fade is needed, gradually increase volume to 1 with fadeInTime seconds
-	const isFadeNeeded = document.getElementById('isFadeNeeded').checked;
-	if (isFadeNeeded) {
-		const fadeInTime = parseFloat(document.getElementById('fadeInTime').value);
-		const fadeInterval = setInterval(() => {
-			if (audio.volume < 1) {
-				setVolume(audio, audio.volume + 0.1);
-			} else {
-				clearInterval(fadeInterval);
-			}
-		}, fadeInTime * 1000 / 10);
-
-		// add event listener to fade out audio when it finishes
-		audio.addEventListener('ended', () => {
-			const fadeOutTime = parseFloat(document.getElementById('fadeOutTime').value);
-			fadeOut(audio, fadeOutTime);
-		});
-	}
+    // play audio immediately without fading in/out
+    audio.volume = 1;
+    audio.currentTime = 0;
+    audio.play();
 }
+
 
 
 function fadeOut(audio, fadeOutTime) {
