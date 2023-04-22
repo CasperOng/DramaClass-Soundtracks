@@ -26,20 +26,42 @@ function stopAllTracks() {
     }
 }
 
-function playTrack(trackId) {
-    // get audio element by trackId
-    const audio = document.getElementById(trackId);
-
-    // stop all other playing tracks
-    stopAllTracks(trackId);
-
-    // play audio immediately without fading in/out
-    audio.volume = 1;
-    audio.currentTime = 0;
-    audio.play();
+function playTrack(trackName) {
+	var track = document.getElementById(trackName);
+	var isFadeNeeded = document.getElementById("isFadeNeeded").checked;
+	var fadeInTime = parseFloat(document.getElementById("fadeInTime").value);
+	var fadeOutTime = parseFloat(document.getElementById("fadeOutTime").value);
+  
+	// Stop all other tracks with fade
+	stopAllTracks();
+  
+	// Set volume to 0 to prepare for fade in
+	track.volume = 0;
+  
+	// Play the track
+	track.play();
+  
+	// If fade is needed, fade in
+	if (isFadeNeeded) {
+	  track.addEventListener('timeupdate', function() {
+		var currentTime = track.currentTime;
+		var duration = track.duration;
+  
+		// Calculate the current volume based on time
+		var volume = currentTime / duration;
+  
+		// Fade in
+		if (currentTime < fadeInTime) {
+		  track.volume = volume;
+		}
+  
+		// Fade out
+		if (duration - currentTime < fadeOutTime) {
+		  track.volume = (duration - currentTime) / fadeOutTime;
+		}
+	  });
+	}
 }
-
-
 
 function fadeOut(audio, fadeOutTime) {
 	// gradually decrease volume to 0 with fadeOutTime seconds
