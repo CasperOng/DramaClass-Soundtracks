@@ -22,6 +22,10 @@ function setVolume(audio, volume) {
 		clearInterval(fadeOutInterval);
 		delete track.fadeOutInterval;
 	  }
+	  document.addEventListener('touchstart', function() {
+		playTrack(trackId);
+	  });
+	  
 	}
   }
   
