@@ -13,7 +13,7 @@ function setVolume(audio, volume) {
 	const tracks = document.getElementsByTagName('audio');
 	for (let i = 0; i < tracks.length; i++) {
 	  const track = tracks[i];
-	  if (!track.paused) {
+	  if (!track.paused) 
 		track.pause();
 		track.currentTime = 0;
 	  }
