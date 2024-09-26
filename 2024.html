@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Drama Class Soundtracks</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script type="text/javascript" src="script.js"></script>
+    <style>
+        body {
+            padding: 40px;
+        }
+
+        /* Animation */
+
+        @keyframes fadeInUp {
+            from {
+                transform: translate3d(0,40px,0)
+            }
+
+            to {
+                transform: translate3d(0,0,0);
+                opacity: 1
+            }
+        }
+
+        @-webkit-keyframes fadeInUp {
+            from {
+                transform: translate3d(0,40px,0)
+            }
+
+            to {
+                transform: translate3d(0,0,0);
+                opacity: 1
+            }
+        }
+
+        .animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+            -webkit-animation-duration: 1s;
+            -webkit-animation-fill-mode: both
+        }
+
+        .animatedFadeInUp {
+            opacity: 0
+        }
+
+        .fadeInUp {
+            opacity: 0;
+            animation-name: fadeInUp;
+            -webkit-animation-name: fadeInUp;
+        }
+    </style>
+</head>
+<body>
+    <div class="container animated fadeInUp">
+        <h1>Drama Class Soundtracks</h1>
+        <p class="animated fadeInUp">Select a soundtrack to play:</p>
+        <ul class="animated fadeInUp">
+            <li><button onclick="playTrack('happy')">Track 1 (Happy music (16 mins Edited to 15:45))</button></li>
+            <li><button onclick="playTrack('elegant')">Track 2 (Elegant music (20mins) )</button></li>
+            <li><button onclick="playTrack('nervous')">Track 3 (Nervous music (6mins))</button></li>
+        </ul>
+        <div class="options">
+        
+            <button onclick="instantStop()">Stop All</button>        
+        </div>        
+        <audio id="happy" src="./Sounds/Happy music (16 mins Edited).mp3" onended="stopTrack()"></audio>
+        <audio id="elegant" src="./Sounds/Elegant music (20 mins Edited).mp3" onended="stopTrack()"></audio>
+        <audio id="nervous" src="./Sounds/Nervous music (6 mins).mp3" onended="stopTrack()"></audio>
+        <audio id="happy-shortened" src="./Sounds/Happy music (16 mins Edited).mp3" onended="stopTrack()"></audio>
+        <audio id="elegant-increased" src="./Sounds/Elegant music (20 mins Edited).mp3" onended="stopTrack()"></audio>
+    </div>
+</body>
+</html>
