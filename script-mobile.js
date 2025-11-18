@@ -67,6 +67,26 @@ function instantStop() {
 	stopAllTracks();
 }
 
+// Function to set volume for all audio elements from slider
+function setVolume(value) {
+	const volume = value / 100; // Convert percentage to 0-2 range (allows amplification)
+	const tracks = document.getElementsByTagName('audio');
+	
+	for (let i = 0; i < tracks.length; i++) {
+		tracks[i].volume = volume;
+	}
+	
+	// Update volume display
+	document.getElementById('volumeValue').textContent = value + '%';
+}
+
+// Function to play track with fade values from the UI
+function playTrackWithFade(trackId) {
+	const fadeInTime = parseFloat(document.getElementById('fadeInTime').value) * 1000; // Convert to milliseconds
+	const fadeOutTime = parseFloat(document.getElementById('fadeOutTime').value) * 1000; // Convert to milliseconds
+	playTrack(trackId, fadeInTime, fadeOutTime);
+}
+
 // Add event listeners to play track buttons
 const happyButton = document.getElementById("happy-button");
 happyButton.addEventListener("touchstart", function() {
