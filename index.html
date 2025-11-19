@@ -60,10 +60,10 @@
         <ul class="animated fadeInUp">
             <li><button onclick="playTrack('MissionImpossible')">Mission Impossible</button></li>
             <li><button onclick="playTrack('NervousMusic')">Nervous Music</button></li>
-            <li><button onclick="playTrack('PSSIncreased')">Police Station</button></li>
         </ul>
         <p class="animated fadeInUp" style="font-size: 24px; text-align: center;">Select a sound effect to play:</p>
         <ul class="animated fadeInUp">
+            <li><button onclick="playTrack('PSSIncreased')">Police Station</button></li>
             <li><button onclick="playTrack('DoorKnocking')">Door Knocking</button></li>
             <li><button onclick="playTrack('TelephoneRinging')">Telephone Ringing</button></li>
             <li><button onclick="playTrack('PoliceRadioChatter')">Police Radio Chatter</button></li>
@@ -76,7 +76,7 @@
             <!-- Music Audio Elements -->
             <audio id="MissionImpossible" src="./Sounds/Mission Impossible soundtrack.mp3" preload="auto" onended="stopTrack()"></audio>
             <audio id="NervousMusic" src="./Sounds/Nervous music.mp3" preload="auto" onended="stopTrack()"></audio>
-            <audio id="PSSIncreased" src="./Sounds/PSS-Increased.mp3" preload="auto" onended="stopTrack()"></audio>
+            <audio id="PSSIncreased" src="./Sounds/PSS-Increased.mp3" preload="auto" loop></audio>
             
             <!-- Sound Effect Audio Elements -->
             <audio id="DoorKnocking" src="./Sounds/Door knocking sound.mp3" preload="auto" onended="stopTrack()"></audio>
