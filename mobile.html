@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script defer src="./script-mobile.js"></script>
+    <div id="loading-bar" aria-hidden="true"><div class="loading-bar__fill"></div></div>
     <style>
         body {
             padding: 40px;
@@ -96,6 +97,21 @@
             <audio id="PoliceSiren" src="./Sounds/police-siren.mp3" preload="auto" onended="stopTrack()"></audio>
             <audio id="donut" src="./Sounds/donut.mp3" preload="auto" onended="stopTrack()"></audio>
     </div>
+    <script>
+        // Simple loading bar: animates until window load, then fades out
+        (function() {
+            const bar = document.getElementById('loading-bar');
+            if (!bar) return;
+            window.addEventListener('load', function() {
+                bar.classList.add('loading-bar--done');
+                setTimeout(() => {
+                    if (bar && bar.parentNode) {
+                        bar.parentNode.removeChild(bar);
+                    }
+                }, 400);
+            });
+        })();
+    </script>
     <script>
         // Fallback: define playback helpers inline if external script fails to load
         if (typeof window.playTrack !== 'function') {

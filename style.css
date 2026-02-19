@@ -74,3 +74,33 @@ button:hover {
     animation-name: fadeInUp;
     -webkit-animation-name: fadeInUp;
 }
+
+/* Loading bar shown during initial page load */
+#loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(51, 122, 183, 0.15);
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.loading-bar__fill {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #337ab7, #5cb85c);
+    animation: loadingBarProgress 1.6s ease-in-out infinite;
+}
+
+#loading-bar.loading-bar--done {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes loadingBarProgress {
+    0% { width: 10%; transform: translateX(-20%); }
+    50% { width: 70%; transform: translateX(20%); }
+    100% { width: 10%; transform: translateX(120%); }
+}
