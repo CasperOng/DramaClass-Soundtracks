@@ -67,6 +67,12 @@ function instantStop() {
 	stopAllTracks();
 }
 
+// Function called when a track ends
+function stopTrack() {
+	// This is called by onended event in HTML
+	// The actual stopping logic is handled in playTrack's event listener
+}
+
 // Function to set volume for all audio elements from slider
 function setVolume(value) {
 	const volume = value / 100; // Convert percentage to 0-2 range (allows amplification)
@@ -87,30 +93,4 @@ function playTrackWithFade(trackId) {
 	playTrack(trackId, fadeInTime, fadeOutTime);
 }
 
-// Add event listeners to play track buttons
-const happyButton = document.getElementById("happy-button");
-happyButton.addEventListener("touchstart", function() {
-	const fadeInTime = document.getElementById("fadeInTime").value * 1000;
-	const fadeOutTime = document.getElementById("fadeOutTime").value * 1000;
-	playTrack("happy", fadeInTime, fadeOutTime);
-});
-
-const elegantButton = document.getElementById("elegant-button");
-elegantButton.addEventListener("touchstart", function() {
-	const fadeInTime = document.getElementById("fadeInTime").value * 1000;
-	const fadeOutTime = document.getElementById("fadeOutTime").value * 1000;
-	playTrack("elegant", fadeInTime, fadeOutTime);
-});
-
-const nervousButton = document.getElementById("nervous-button");
-nervousButton.addEventListener("touchstart", function() {
-	const fadeInTime = document.getElementById("fadeInTime").value * 1000;
-	const fadeOutTime = document.getElementById("fadeOutTime").value * 1000;
-	playTrack("nervous", fadeInTime, fadeOutTime);
-});
-
-// Add event listener to stop button
-const stopButton = document.getElementById("stop-button");
-stopButton.addEventListener("touchstart", function() {
-	instantStop();
-});
+// Event listeners removed - using onclick handlers in HTML instead
