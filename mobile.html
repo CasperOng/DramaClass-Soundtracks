@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Drama Class Soundtracks (Mobile Mode)</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <script type="text/javascript" src="script-mobile.js"></script>
     <style>
         body {
@@ -55,28 +56,37 @@
 <body>
     <div class="container animated fadeInUp">
         <h1>Drama Class Soundtracks (Touch Mode)</h1>
-        <h1 style="font-size: 1rem; color: #7c7c7c">Version 11c</h1>
+        <h1 style="font-size: 1rem; color: #7c7c7c">Version 12 (Mobile)</h1>
         <p class="animated fadeInUp" style="font-size: 24px; text-align: center;">Select a music to play:</p>
         <ul class="animated fadeInUp">
-            <li><button onclick="playTrack('Mission Impossible')">Mission Impossible (Repeated)</button></li>
-            <li><button onclick="playTrack('HeadTheMasterPiece')">Elegant Baroque Music</button></li></n>
-            
+            <li><button onclick="playTrack('MissionImpossible')">Mission Impossible</button></li>
+            <li><button onclick="playTrack('NervousMusic')">Nervous Music</button></li>
+            <li><button onclick="playTrack('PinkPanther')">Pink Panther</button></li>
         </ul>
         <p class="animated fadeInUp" style="font-size: 24px; text-align: center;">Select a sound effect to play:</p>
         <ul class="animated fadeInUp">
-            <li><button onclick="playTrack('Doorbell')">Doorbell</button></li>
-            <li><button onclick="playTrack('RingingPhoneSound')">Ringing Phone Sound</button></li>
-            <li><button onclick="playTrack('Knock')">Door Knocking</button></li>
+            <li><button onclick="playTrack('PSSIncreased')">Police Station</button></li>
+            <li><button onclick="playTrack('DoorKnocking')">Door Knocking</button></li>
+            <li><button onclick="playTrack('TelephoneRinging')">Telephone Ringing</button></li>
+            <li><button onclick="playTrack('PoliceRadioChatter')">Police Radio Chatter</button></li>
+            <li><button onclick="playTrack('PoliceSiren')">Police Siren</button></li>
+            <li><button onclick="playTrack('donut')">Donut Alarm</button></li>
         </ul>
         <div class="options">
-    
-            <buttonstop onclick="instantStop()">Stop All</button>        
+            <button onclick="instantStop()">Stop All</button>        
         </div>        
-            <audio id="Mission Impossible" src="./Sounds/MissionImpossibleDoubleedited.mp3" preload="auto" onended="stopTrack()"></audio>
-            <audio id="HeadTheMasterPiece" src="./Sounds/ElegantBaroque.mp3" preload="auto" onended="stopTrack()"></audio>
-            <audio id="Doorbell" src="./Sounds/doorbell.mp3" preload="auto" onended="stopTrack()"></audio>
-            <audio id="Knock" src="./Sounds/doorknocking-volboosted.mp3" preload="auto" onended="stopTrack()"></audio>
-            <audio id="RingingPhoneSound" src="./Sounds/RingingPhoneSound.mp3" preload="auto" onended="stopTrack()"></audio>
+            <!-- Music Audio Elements -->
+            <audio id="MissionImpossible" src="./Sounds/mission-impossible-soundtrack.mp3" preload="auto" onended="stopTrack()"></audio>
+            <audio id="NervousMusic" src="./Sounds/nervous-music.mp3" preload="auto" onended="stopTrack()"></audio>
+            <audio id="PinkPanther" src="./Sounds/pinkpanther.mp3" preload="auto" onended="stopTrack()"></audio>
+
+            <!-- Sound Effect Audio Elements -->
+            <audio id="PSSIncreased" src="./Sounds/policestn.mp3" preload="auto" loop></audio>
+            <audio id="DoorKnocking" src="./Sounds/door-knocking-sound.mp3" preload="auto" onended="stopTrack()"></audio>
+            <audio id="TelephoneRinging" src="./Sounds/telephone-ringing.mp3" preload="auto" onended="stopTrack()"></audio>
+            <audio id="PoliceRadioChatter" src="./Sounds/police-radio-chatter.mp3" preload="auto" onended="stopTrack()"></audio>
+            <audio id="PoliceSiren" src="./Sounds/police-siren.mp3" preload="auto" onended="stopTrack()"></audio>
+            <audio id="donut" src="./Sounds/donut.mp3" preload="auto" onended="stopTrack()"></audio>
     </div>
 </body>
 </html>

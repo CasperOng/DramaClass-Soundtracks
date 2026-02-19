@@ -11,86 +11,103 @@ function setVolume(audio, volume) {
 // Function to stop all tracks and clear fade-out intervals
 function stopAllTracks() {
 	const tracks = document.getElementsByTagName('audio');
-	for (let i = 0; i < tracks.length; i++) {
-		const track = tracks[i];
-		if (!track.paused) {
+	// Clamp the volume to the valid range
+	function clampVolume(volume) {
+		if (volume > 1) {
+			return 1;
+		}
+		if (volume < 0) {
+			return 0;
+		}
+		return volume;
+	}
+
+	// Stop every audio element and clear any pending fade timers
+	function stopAllTracks() {
+		const tracks = document.getElementsByTagName('audio');
+		for (let i = 0; i < tracks.length; i++) {
+			const track = tracks[i];
 			track.pause();
 			track.currentTime = 0;
-		}
-		const fadeOutInterval = track.fadeOutInterval;
-		if (fadeOutInterval) {
-			clearInterval(fadeOutInterval);
-			delete track.fadeOutInterval;
+			const fadeOutInterval = track.fadeOutInterval;
+			if (fadeOutInterval) {
+				clearInterval(fadeOutInterval);
+				delete track.fadeOutInterval;
+			}
+			track.onended = null;
 		}
 	}
-}
 
-// Function to play a track with optional fade in/out effects
-function playTrack(trackId, fadeInTime, fadeOutTime) {
-	const audio = document.getElementById(trackId);
+	// Play a track with optional fade in/out durations in milliseconds
+	function playTrack(trackId, fadeInTime, fadeOutTime) {
+		const audio = document.getElementById(trackId);
+		if (!audio) {
+			console.error('No audio element found for id', trackId);
+			return;
+		}
 
-	// Stop all other tracks and set current track to start
-	stopAllTracks();
-	audio.currentTime = 0;
+		// Stop any other sounds first
+		stopAllTracks();
+		audio.currentTime = 0;
 
-	// Play track with optional fade in effect
-	audio.volume = 0;
-	audio.play();
-	if (fadeInTime) {
-		audio.animate([{ volume: 0 }, { volume: 1 }], { duration: fadeInTime });
-	} else {
-		audio.volume = 1;
-	}
+		// Start playback
+		audio.volume = 0;
+		const playPromise = audio.play();
 
-	// Add event listener to fade out track if needed
-	audio.addEventListener("ended", function() {
-		if (fadeOutTime) {
-			const fadeOutInterval = setInterval(() => {
-				if (audio.volume > 0) {
-					setVolume(audio, audio.volume - 0.1);
-				} else {
-					clearInterval(fadeOutInterval);
-					audio.pause();
-					audio.currentTime = 0;
+		// Apply optional fade-in
+		const fadeInDuration = Number(fadeInTime) || 0;
+		if (fadeInDuration > 0) {
+			const stepMs = 50;
+			const steps = Math.ceil(fadeInDuration / stepMs);
+			let currentStep = 0;
+			const fadeInInterval = setInterval(() => {
+				currentStep += 1;
+				const nextVolume = clampVolume(currentStep / steps);
+				audio.volume = nextVolume;
+				if (currentStep >= steps) {
+					clearInterval(fadeInInterval);
 				}
-			}, fadeOutTime * 1000 / 10);
-			audio.fadeOutInterval = fadeOutInterval;
+			}, stepMs);
 		} else {
-			audio.pause();
-			audio.currentTime = 0;
+			audio.volume = 1;
 		}
-	});
-}
 
-// Function to instantly stop all tracks
-function instantStop() {
-	stopAllTracks();
-}
+		// On end, optionally fade out before stopping
+		const fadeOutDuration = Number(fadeOutTime) || 0;
+		audio.onended = function() {
+			if (fadeOutDuration > 0) {
+				const stepMs = 50;
+				const steps = Math.ceil(fadeOutDuration / stepMs);
+				let currentStep = steps;
+				const fadeOutInterval = setInterval(() => {
+					currentStep -= 1;
+					const nextVolume = clampVolume(currentStep / steps);
+					audio.volume = nextVolume;
+					if (currentStep <= 0) {
+						clearInterval(fadeOutInterval);
+						audio.pause();
+						audio.currentTime = 0;
+					}
+				}, stepMs);
+				audio.fadeOutInterval = fadeOutInterval;
+			} else {
+				audio.pause();
+				audio.currentTime = 0;
+			}
+		};
 
-// Function called when a track ends
-function stopTrack() {
-	// This is called by onended event in HTML
-	// The actual stopping logic is handled in playTrack's event listener
-}
-
-// Function to set volume for all audio elements from slider
-function setVolume(value) {
-	const volume = value / 100; // Convert percentage to 0-2 range (allows amplification)
-	const tracks = document.getElementsByTagName('audio');
-	
-	for (let i = 0; i < tracks.length; i++) {
-		tracks[i].volume = volume;
+		// Avoid unhandled promise rejections on autoplay blocks
+		if (playPromise && playPromise.catch) {
+			playPromise.catch((err) => {
+				console.warn('Playback blocked or unsupported source', err);
+			});
+		}
 	}
-	
-	// Update volume display
-	document.getElementById('volumeValue').textContent = value + '%';
-}
 
-// Function to play track with fade values from the UI
-function playTrackWithFade(trackId) {
-	const fadeInTime = parseFloat(document.getElementById('fadeInTime').value) * 1000; // Convert to milliseconds
-	const fadeOutTime = parseFloat(document.getElementById('fadeOutTime').value) * 1000; // Convert to milliseconds
-	playTrack(trackId, fadeInTime, fadeOutTime);
-}
+	// Public helper used by the Stop All button
+	function instantStop() {
+		stopAllTracks();
+	}
 
-// Event listeners removed - using onclick handlers in HTML instead
+	// Provided for HTML onended hook (logic handled in playTrack)
+	function stopTrack() {}
